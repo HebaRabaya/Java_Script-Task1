@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h2>TodoInput</h2>
+  <div class="todo-app">
+    <div class="input-container">
+      <i class="fa-sharp fa-solid fa-book"></i>
+      <input type="text" id="new-task-input" placeholder="New Todo" autocomplete="off">
+      <div id="suggestions" class="suggestions"></div>
+    </div>
+    <p id="error"></p> 
+    <button id="add-task-button">Add new task</button>
+  </div>
+
+  <h2>TodoList</h2>
+  <div class="button-container">
+    <button id="filter-all">All</button>
+    <button id="filter-done">Done</button>
+    <button id="filter-todo">Todo</button>
+  </div>
+  <ul id="task-list" class="todo-list"></ul>
+  <div class="button-container">
+    <button id="delete-done">
+      <i class="fas fa-trash" style="color:red;"></i> Delete done tasks
+    </button>
+    <button id="delete-all">
+      <i class="fas fa-trash" style="color:red;"></i> Delete all tasks
+    </button>
+  </div>
+<div id="confirmation-message"></div>
+
+  <!-- Edit Task Modal -->
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <h2>Rename Task</h2>
+      <input type="text" id="edit-task-input" placeholder="Edit task">
+      <div class="modal-buttons">
+        <button id="save-task-button" class="save-button">Save</button>
+        <button id="cancel-edit-button" class="cancel-button">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="delete-modal" class="modal">
+    <div class="modal-content">
+      <h2>Delete All Tasks</h2>
+      <p>Are you sure you want to delete all tasks?</p>
+      <div class="modal-buttons">
+        <button id="confirm-delete" class="save-button">Confirm</button>
+        <button id="cancel-delete" class="cancel-button">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const taskInput = document.getElementById('new-task-input');
+    const addTaskButton = document.getElementById('add-task-button');
+    const taskList = document.getElementById('task-list');
+    const filterAllButton = document.getElementById('filter-all');
+    const filterDoneButton = document.getElementById('filter-done');
+    const filterTodoButton = document.getElementById('filter-todo');
+    const deleteDoneButton = document.getElementById('delete-done');
+    const deleteAllButton = document.getElementById('delete-all');
+    const error = document.getElementById('error');
+    const editModal = document.getElementById('edit-modal');
+    const editTaskInput = document.getElementById('edit-task-input');
+    const saveTaskButton = document.getElementById('save-task-button');
+    const cancelEditButton = document.getElementById('cancel-edit-button');
+    const suggestionsBox = document.getElementById('suggestions'); 
+const inputField = document.getElementById('new-task-input');
+
+
+inputField.addEventListener('input', () => {
+  const query = inputField.value.toLowerCase();
+  suggestionsBox.innerHTML = ''; 
+
+  if (query) {
+
+    const allSuggestions = tasks.map(task => task.text);
+
+   
+    allSuggestions.forEach(suggestion => {
+      const suggestionItem = document.createElement('div');
+      suggestionItem.className = 'suggestion-item';
+      suggestionItem.textContent = suggestion;
+
+     
+      suggestionItem.addEventListener('click', () => {
+        inputField.value = suggestion; 
+        suggestionsBox.innerHTML = ''; 
+      });
+
+      suggestionsBox.appendChild(suggestionItem); 
+    });
+  }
+});
+
+
+inputField.addEventListener('blur', () => {
+  setTimeout(() => (suggestionsBox.innerHTML = ''), 200); 
+});
+
+
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || []; 
+    let editTaskIndex = -1;
+  
+    function saveTasksToLocalStorage() {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+  
+    function updateButtonColors() {
+      deleteDoneButton.style.backgroundColor = tasks.some(task => task.done) ? '#dc3545' : '#f8d7da';
+      deleteAllButton.style.backgroundColor = tasks.length > 0 ? '#dc3545' : '#f8d7da';
+    }
+  
+    function resetButtonStyles() {
+      filterAllButton.classList.remove('active');
+      filterDoneButton.classList.remove('active');
+      filterTodoButton.classList.remove('active');
+    }
+  
+    addTaskButton.addEventListener('click', () => {
+      const taskText = taskInput.value.trim();
+  
+      if (taskText === '') {
+        error.textContent = "Task cannot be empty.";
+        error.style.display = "block";
+        return;
+      }
+  
+      if (/^\d/.test(taskText)) {
+        error.textContent = "Task cannot start with a number.";
+        error.style.display = "block";
+        return;
+      }
+  
+      if (taskText.length < 5) {
+        error.textContent = "Task must be at least 5 characters long.";
+        error.style.display = "block";
+        return;
+      }
+  
+      error.style.display = "none";
+  
+      tasks.push({ text: taskText, done: false });
+      taskInput.value = '';
+      renderTasks();
+      updateButtonColors();
+      saveTasksToLocalStorage(); 
+    });
+  
+    function renderTasks(filter = 'all') {
+      taskList.innerHTML = '';
+      tasks
+        .filter(task => {
+          if (filter === 'done') return task.done;
+          if (filter === 'todo') return !task.done;
+          return true;
+        })
+        .forEach((task, index) => {
+          const taskItem = document.createElement('li');
+          taskItem.className = 'task';
+  
+          const taskText = document.createElement('span');
+          taskText.textContent = task.text;
+          if (task.done) taskText.classList.add('completed');
+  
+          const actionContainer = document.createElement('div');
+          actionContainer.className = 'task-actions';
+  
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.checked = task.done;
+          checkbox.addEventListener('change', () => {
+            tasks[index].done = !tasks[index].done;
+            renderTasks(filter);
+            updateButtonColors();
+            saveTasksToLocalStorage(); 
+          });
+  
+          const editButton = document.createElement('button');
+          editButton.textContent = '✏️';
+          editButton.addEventListener('click', () => {
+            editTaskIndex = index;
+            editTaskInput.value = task.text;
+            editModal.style.display = 'block';
+          });
+  
+          const deleteButton = document.createElement('button');
+          deleteButton.innerHTML = '<i class="fas fa-trash" style="color:red;"></i>';
+          deleteButton.addEventListener('click', () => {
+            tasks.splice(index, 1);
+            renderTasks(filter);
+            updateButtonColors();
+            saveTasksToLocalStorage(); 
+          });
+  
+          actionContainer.appendChild(checkbox);
+          actionContainer.appendChild(editButton);
+          actionContainer.appendChild(deleteButton);
+          taskItem.appendChild(taskText);
+          taskItem.appendChild(actionContainer);
+          taskList.appendChild(taskItem);
+        });
+    }
+  
+    filterAllButton.addEventListener('click', () => {
+      resetButtonStyles();
+      filterAllButton.classList.add('active');
+      renderTasks('all');
+    });
+  
+    filterDoneButton.addEventListener('click', () => {
+      resetButtonStyles();
+      filterDoneButton.classList.add('active');
+      renderTasks('done');
+    });
+  
+    filterTodoButton.addEventListener('click', () => {
+      resetButtonStyles();
+      filterTodoButton.classList.add('active');
+      renderTasks('todo');
+    });
+  
+    deleteDoneButton.addEventListener('click', () => {
+      tasks = tasks.filter(task => !task.done);
+      renderTasks();
+      updateButtonColors();
+      saveTasksToLocalStorage(); 
+    });
+  
+    deleteAllButton.addEventListener('click', () => {
+      tasks = [];
+      renderTasks();
+      updateButtonColors();
+      saveTasksToLocalStorage(); 
+    });
+  
+    saveTaskButton.addEventListener('click', () => {
+      const updatedText = editTaskInput.value.trim();
+  
+      if (updatedText === '') {
+        alert("Task cannot be empty.");
+        return;
+      }
+  
+      if (/^\d/.test(updatedText)) {
+        alert("Task cannot start with a number.");
+        return;
+      }
+  
+      if (updatedText.length < 5) {
+        alert("Task must be at least 5 characters long.");
+        return;
+      }
+  
+      tasks[editTaskIndex].text = updatedText;
+      editModal.style.display = 'none';
+      renderTasks();
+      saveTasksToLocalStorage(); 
+    });
+  
+    cancelEditButton.addEventListener('click', () => {
+      editModal.style.display = 'none';
+    });
+  
+    renderTasks(); 
+    updateButtonColors();
+    const deleteModal = document.getElementById('delete-modal');
+  const confirmDeleteButton = document.getElementById('confirm-delete');
+  const cancelDeleteButton = document.getElementById('cancel-delete');
+
+  // Delete All Tasks
+  deleteAllButton.addEventListener('click', () => {
+    deleteModal.style.display = 'block';
+  });
+
+  confirmDeleteButton.addEventListener('click', () => {
+    tasks = [];
+    renderTasks();
+    updateButtonColors();
+    saveTasksToLocalStorage();
+    deleteModal.style.display = 'none';
+  });
+
+  cancelDeleteButton.addEventListener('click', () => {
+    deleteModal.style.display = 'none';
+  });
+ 
+  </script>
+</body>
+</html>
+
