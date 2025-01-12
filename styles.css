@@ -1,0 +1,265 @@
+/* Style for the body */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: white;
+  margin: 0;
+  padding: 2rem 3rem;
+}
+
+/* Style for the todo app */
+.todo-app {
+  margin: 2rem auto;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 2rem 3rem;
+  border: 0.0625rem solid #ccc;
+  width: 88%;
+}
+
+h2 {
+  margin: 1rem 0;
+  font-size: 2.5rem;
+}
+
+#add-task-button {
+  background-color: #17a2b8; 
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.3125rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+#add-task-button:hover {
+  background-color: #00697a; 
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.8); 
+}
+
+input[type="text"] {
+  width: calc(100% - 3rem); 
+  padding: 0.625rem;
+  font-size: 1rem;
+  margin-bottom: 0.625rem;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.25rem;
+}
+
+/* Positioning the icon next to the input field */
+.input-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 0; 
+}
+
+.input-container i {
+  background-color: #17a2b8; 
+  color: white;
+  padding: 0.625rem;
+  border-radius: 0.25rem;
+}
+.suggestions {
+  position: absolute;
+  background-color: white;
+  
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 5px; 
+  max-height: 200px; 
+  overflow-y: auto; 
+  width: 95%; 
+  z-index: 1000;
+}
+
+.suggestion-item {
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #e6f7ff; 
+}
+
+/* Error message styling */
+#error {
+  color: #dc3545; 
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  text-align: center;
+  width: 100%; 
+  margin: 0.5rem auto; 
+}
+
+button {
+  color: white;
+  border: none;
+  padding: 0.625rem 0.9375rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+justify-content: center;
+align-items: center;
+}
+
+.modal-content {
+background-color: #fff;
+padding: 20px;
+border-radius: 8px;
+text-align: center;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button {
+padding: 10px 20px;
+margin: 10px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+#confirmButton {
+background-color: #4CAF50;
+color: white;
+}
+
+#cancelButton {
+background-color: #f44336;
+color: white;
+}
+button:hover {
+  opacity: 0.8;
+}
+
+#filter-all, #filter-done, #filter-todo {
+  background-color: #17a2b8;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.button-container button {
+  width: 40%;
+  margin: 0.5rem;
+}
+
+/* Active button styles */
+button.active {
+  background-color: #00697a; 
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.8); 
+}
+
+.todo-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.625rem;
+  border: 0.0625rem solid #ddd;
+  background-color: #f9f9f9;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+.task-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  width: 300px; 
+  height: 150px;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  width: 100%; 
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2); 
+}
+
+.modal input[type="text"] {
+  padding: 0.5rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+  width: 100%; 
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.save-button {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem; 
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #00697a;
+}
+
+.cancel-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem; 
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #c82333;
+}
+#confirm-delete{
+  background-color: rgb(179, 172, 172);
+  color: black;
+}
+#cancel-delete{
+  background-color: red;
+}
