@@ -57,6 +57,28 @@
         <button id="cancel-delete" class="cancel-button">Cancel</button>
       </div>
     </div>
+
+    <div id="delete-done-modal" class="modal">
+      <div class="modal-content">
+        <h2>Delete Done Tasks</h2>
+        <p>Are you sure you want to delete Done tasks?</p>
+        <div class="modal-buttons">
+          <button id="confirm-delete-done" class="save-button">Confirm</button>
+          <button id="cancel-delete-done" class="cancel-button">Cancel</button>
+        </div>
+      </div>
+    </div>
+    
+    <div id="delete-task-modal" class="modal">
+      <div class="modal-content">
+        <h2>Delete Task</h2>
+        <p>Are you sure you want to delete this task?</p>
+        <div class="modal-buttons">
+          <button id="confirm-delete-task" class="save-button">Confirm</button>
+          <button id="cancel-delete-task" class="cancel-button">Cancel</button>
+        </div>
+      </div>
+    </div>
   </div>
   <script>
     const taskInput = document.getElementById('new-task-input');
@@ -73,7 +95,19 @@
     const saveTaskButton = document.getElementById('save-task-button');
     const cancelEditButton = document.getElementById('cancel-edit-button');
     const suggestionsBox = document.getElementById('suggestions'); 
-const inputField = document.getElementById('new-task-input');
+    const inputField = document.getElementById('new-task-input');
+
+
+    const deleteDoneModal = document.getElementById('delete-done-modal');
+    const deleteTaskModal = document.getElementById('delete-task-modal');
+    const confirmDeleteDone = document.getElementById('confirm-delete-done');
+    const cancelDeleteDone = document.getElementById('cancel-delete-done');
+    const confirmDeleteTask = document.getElementById('confirm-delete-task');
+    const cancelDeleteTask = document.getElementById('cancel-delete-task');
+
+
+
+
 
 
 inputField.addEventListener('input', () => {
@@ -292,6 +326,8 @@ inputField.addEventListener('blur', () => {
   cancelDeleteButton.addEventListener('click', () => {
     deleteModal.style.display = 'none';
   });
+ 
+ 
  
   </script>
 </body>
